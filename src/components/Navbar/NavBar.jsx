@@ -11,7 +11,7 @@ const NavBar = () => {
                 <img src={logo} id='logo' />
                 <div id='container-nav-links'>
                     <div className='link'>
-                    <HiAcademicCap />
+                        <HiAcademicCap />
                         <NavLink to='/'>Rozvrh student</NavLink>
                     </div>
                     <div className='link'>
