@@ -1,27 +1,40 @@
+import { useState, useEffect } from 'react'
 import { NavLink } from 'react-router-dom'
-import { HiAcademicCap } from "react-icons/hi2";
+import { HiAcademicCap, HiUser } from 'react-icons/hi2'
+
+import { getCurrentTime } from '../../modules/module'
 
 import './NavBar.css'
 import logo from '../../assets/logo.png'
 
 const NavBar = () => {
+    const [now, setNow] = useState(getCurrentTime)
+
+    useEffect(() => {
+        const interval = setInterval(() => setNow(getCurrentTime), 1000)
+
+        return () => clearInterval(interval)
+    }, [now])
+
     return (
         <>
             <nav>
                 <img src={logo} id='logo' />
                 <div id='container-nav-links'>
-                    <div className='link'>
+                    <NavLink to='/' className='link'>
                         <HiAcademicCap />
-                        <NavLink to='/'>Rozvrh student</NavLink>
-                    </div>
-                    <div className='link'>
-                        <NavLink to='scheduleteacher'>Rozvrh učitel</NavLink>
-                    </div>
-                    <div className='link'>
-                        <NavLink to='substitution'>Suplování</NavLink>
-                    </div>
+                        <span>Rozvrh&nbsp;tříd</span>
+                    </NavLink>
+                    {/* <NavLink to='scheduleteacher' className='link'>
+                        <HiBookOpen />
+                        <span>Rozvrh&nbsp;učitel</span>
+                    </NavLink> */}
+                    <NavLink to='substitution' className='link'>
+                        <HiUser />
+                        <span>Suplování</span>
+                    </NavLink>
                 </div>
-                <div id='time'>00:00</div>
+                <div id='time'>{`${now.hours}:${now.minutes}:${now.seconds}`}</div>
             </nav>
         </>
     )

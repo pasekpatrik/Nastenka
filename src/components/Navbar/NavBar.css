@@ -2,6 +2,7 @@ nav {
     height: 100vh;
     width: 162px;
 
+    color: var(--third-color);
     background-color: var(--primary-color);
     box-shadow: var(--shadow);
 
@@ -21,7 +22,6 @@ nav #logo {
 }
 
 nav #container-nav-links {
-    border: 2px solid red;
     grid-row: 2 / 5;
     grid-column: 1 / 5;
 
@@ -30,15 +30,28 @@ nav #container-nav-links {
     align-items: center;
 
     flex-direction: column;
+    gap: 56px;
 }
 
 nav #container-nav-links .link {
-    border: 2px solid blue;
+    font-size: 20px;
+
     display: flex;
     justify-content: center;
     align-items: center;
 
     flex-direction: column;
+    gap: 2px;
+
+    transition: all .3s;
+}
+
+nav #container-nav-links .link.active {
+    color: var(--secondary-color);
+}
+
+nav #container-nav-links svg {
+    font-size: 72px;
 }
 
 nav #time {
@@ -47,4 +60,6 @@ nav #time {
 
     justify-self: center;
     align-self: center;
+
+    font-size: 26px;
 }
