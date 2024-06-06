@@ -24,7 +24,8 @@ export const fetchRooms = async () => {
     }
 }
 
-export const getData1 = async () => {
+// Hodiny a čas jednotlivých hodin
+export const fetchTimetablePar = async () => {
     try {
         const response = await fetch('https://bakalari.oadusni.cz/bakaweb/if/2/timetable/parameters', {
             method: 'GET',
@@ -48,7 +49,7 @@ export const getData1 = async () => {
 }
 
 // Suplování
-export const getData2 = async () => {
+export const fetchSubstitution = async () => {
     try {
         const response = await fetch('https://bakalari.oadusni.cz/bakaweb/if/2/substitutions/public/20240604', {
             method: 'GET',
@@ -95,7 +96,8 @@ export const fetchSchudleRoom = async (ID) => {
     }
 }
 
-export const getData4 = async () => {
+// Permanetní rozvrh místnosti
+export const fetchPermanetScheduleRoom = async () => {
     try {
         const response = await fetch('https://bakalari.oadusni.cz/bakaweb/if/2/timetable/permanent/room/ZU?date=20200115', {
             method: 'GET',

@@ -1,9 +1,9 @@
 import './SidePanel.css'
 
-const SidePanel = ({ children }) => {
+const SidePanel = ({ children, className }) => {
     return (
         <>
-            <div id='side-panel'>
+            <div id='side-panel' className={className}>
                 {children}
             </div>
         </>
