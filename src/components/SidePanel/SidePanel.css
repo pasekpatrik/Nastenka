@@ -6,5 +6,14 @@
     box-shadow: var(--shadow);
 
     position: fixed;
+    left: -10%;
+
     overflow-y: scroll;
+    direction: rtl;
+
+    transition: all .4s;
+}
+
+#side-panel.active-panel {
+    left: 0;
 }

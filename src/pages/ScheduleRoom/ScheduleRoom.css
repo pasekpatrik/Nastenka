@@ -1,5 +1,6 @@
 .active-room {
     color: var(--secondary-color);
+    transition: all .3s;
 }
 
 .sidepanel-scheduleroom {
@@ -38,6 +39,20 @@
 .container-schedule #schedule #schedule-time {
     border: 2px solid red;
     grid-column: 1 / 11;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container-schedule #schedule #schedule-time .one-param {
+    border: 2px solid black;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    flex-direction: column;
 }
 
 .container-schedule #schedule .day-grid {

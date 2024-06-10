@@ -1,12 +1,10 @@
 const auth = btoa('Skola_2489_01:x263521EFF6A')
 
-// Místnosti
-export const fetchRooms = async () => {
+const fetchData = async (api) => {
     try {
-        const response = await fetch('https://bakalari.oadusni.cz/bakaweb/if/2/common/rooms', {
+        const response = await fetch(api, {
             method: 'GET',
             headers: {
-                'Host': 'https://www.oadusni.cz',
                 'Accept': 'application/json',
                 'Authorization': 'Basic ' + auth
             }
@@ -17,105 +15,24 @@ export const fetchRooms = async () => {
         }
 
         const data = await response.json()
-        
+
         return data
     } catch (error) {
         console.error(error)
     }
 }
+
+// Místnosti
+export const fetchRooms = async () => await fetchData('https://bakalari.oadusni.cz/bakaweb/if/2/common/rooms')
 
 // Hodiny a čas jednotlivých hodin
-export const fetchTimetablePar = async () => {
-    try {
-        const response = await fetch('https://bakalari.oadusni.cz/bakaweb/if/2/timetable/parameters', {
-            method: 'GET',
-            headers: {
-                'Host': 'https://www.oadusni.cz',
-                'Accept': 'application/json',
-                'Authorization': 'Basic ' + auth
-            }
-        })
+export const fetchTimetablePar = async () => await fetchData('https://bakalari.oadusni.cz/bakaweb/if/2/timetable/parameters')
 
-        if (!response.ok) {
-            throw new Error(response.status)
-        }
-
-        const data = await response.json()
-
-        return data
-    } catch (error) {
-        console.error(error)
-    }
-}
-
-// Suplování
-export const fetchSubstitution = async () => {
-    try {
-        const response = await fetch('https://bakalari.oadusni.cz/bakaweb/if/2/substitutions/public/20240604', {
-            method: 'GET',
-            headers: {
-                'Host': 'https://www.oadusni.cz',
-                'Accept': 'application/json',
-                'Authorization': 'Basic ' + auth
-            }
-        })
-
-        if (!response.ok) {
-            throw new Error(response.status)
-        }
-
-        const data = await response.json()
-
-        return data
-    } catch(e) {
-        console.error(e)
-    }   
-}
+// Suplování | čas formát- 20240604
+export const fetchSubstitution = async (time) => await fetchData(`https://bakalari.oadusni.cz/bakaweb/if/2/substitutions/public/${time}`)
 
 // Aktuální rozvrh místnosti
-export const fetchSchudleRoom = async (ID) => {
-    try {
-        const response = await fetch(`https://bakalari.oadusni.cz/bakaweb/if/2/timetable/actual/room/${ID}`, {
-            method: 'GET',
-            headers: {
-                'Host': 'https://www.oadusni.cz',
-                'Accept': 'application/json',
-                'Authorization': 'Basic ' + auth
-            }
-        })
+export const fetchSchudleRoom = async (id) => await fetchData(`https://bakalari.oadusni.cz/bakaweb/if/2/timetable/actual/room/${id}`)
 
-        if (!response.ok) {
-            throw new Error(response.status)
-        }
-
-        const data = await response.json()
-        
-        return data
-    } catch (error) {
-        console.error(error)
-    }
-}
-
-// Permanetní rozvrh místnosti
-export const fetchPermanetScheduleRoom = async () => {
-    try {
-        const response = await fetch('https://bakalari.oadusni.cz/bakaweb/if/2/timetable/permanent/room/ZU?date=20200115', {
-            method: 'GET',
-            headers: {
-                'Host': 'https://www.oadusni.cz',
-                'Accept': 'application/json',
-                'Authorization': 'Basic ' + auth
-            }
-        })
-
-        if (!response.ok) {
-            throw new Error(response.status)
-        }
-
-        const data = await response.json()
-
-        return data
-    } catch (error) {
-        console.error(error)
-    }
-}
+// Permanetní rozvrh místnosti | čas formát- 20240604
+export const fetchPermanetScheduleRoom = async (id, time) => await fetchData(`https://bakalari.oadusni.cz/bakaweb/if/2/timetable/permanent/room/${id}?date=${time}`)

@@ -1,42 +1,45 @@
-import { useState, useEffect } from "react"
-import { fetchRooms, fetchSchudleRoom } from '../../modules/api'
-import { defData, defStateData } from "./defaultData"
+import { useState, useEffect } from 'react'
+import { fetchRooms, fetchTimetablePar, fetchSchudleRoom, fetchPermanetScheduleRoom } from '../../modules/api'
+import { defData, defStateData } from './defaultData'
 
-import SidePanel from "../../components/SidePanel/SidePanel"
+import SidePanel from '../../components/SidePanel/SidePanel'
+import Loader from '../../components/Loader/Loader'
 
 import './ScheduleRoom.css'
 
 const ScheduleRoom = () => {
-    const [room, setRoom] = useState('')
-    const [rooms, setRooms] = useState([])
+    const [loader, setLoader] = useState(true)
+    const [isScheduleActual, setIsScheduleActual] = useState(true)
+    const [room, setRoom] = useState({ room: '', id: '' })
 
+    const [rooms, setRooms] = useState([])
+    const [timetablePar, setTimetablePar] = useState([])
     const [schedule, setSchedule] = useState(defStateData)
 
     const filterScheduleRoom = (paramSchedule) => {
-        let Monday = [defData, defData, defData, defData, defData, defData, defData, defData, defData, defData, defData]
-        let Tuesday = [defData, defData, defData, defData, defData, defData, defData, defData, defData, defData, defData]
-        let Wednesday = [defData, defData, defData, defData, defData, defData, defData, defData, defData, defData, defData]
-        let Thursday = [defData, defData, defData, defData, defData, defData, defData, defData, defData, defData, defData]
-        let Friday = [defData, defData, defData, defData, defData, defData, defData, defData, defData, defData, defData]
-        let All = []
+        let allDays = [[], [], [], [], []]
 
-        paramSchedule.forEach(({ DayIndex, HourIndex, Atoms }) => {
-            if (DayIndex === 0) {
-                Monday.splice(HourIndex - 2, 1, Atoms)
-            } else if (DayIndex === 1) {
-                Tuesday.splice(HourIndex - 2, 1, Atoms)
-            } else if (DayIndex === 2) {
-                Wednesday.splice(HourIndex - 2, 1, Atoms)
-            } else if (DayIndex === 3) {
-                Thursday.splice(HourIndex - 2, 1, Atoms)
-            } else if (DayIndex === 4) {
-                Friday.splice(HourIndex - 2, 1, Atoms)
+        allDays.forEach((oneDay) => {
+            for (let i = 0; i < 11; i++) {
+                oneDay.push(defData)
             }
         })
 
-        All.push(Monday, Tuesday, Wednesday, Thursday, Friday)
+        paramSchedule.forEach(({ DayIndex, HourIndex, Atoms }) => {
+            if (DayIndex === 0) {
+                allDays[DayIndex].splice(HourIndex - 2, 1, Atoms)
+            } else if (DayIndex === 1) {
+                allDays[DayIndex].splice(HourIndex - 2, 1, Atoms)
+            } else if (DayIndex === 2) {
+                allDays[DayIndex].splice(HourIndex - 2, 1, Atoms)
+            } else if (DayIndex === 3) {
+                allDays[DayIndex].splice(HourIndex - 2, 1, Atoms)
+            } else if (DayIndex === 4) {
+                allDays[DayIndex].splice(HourIndex - 2, 1, Atoms)
+            }
+        })
 
-        setSchedule(All)
+        setSchedule(allDays)
     }
 
     const filterNumRoom = (id, rooms) => {
@@ -44,11 +47,31 @@ const ScheduleRoom = () => {
             return oneRoom.ID === id
         })
 
-        setRoom(result[0].Abbrev)
+        setRoom({ room: result[0].Abbrev, id: id })
+    }
+
+    const filterTimetableParam = (paramTimetable) => {
+        let newArray = []
+
+        paramTimetable.forEach((oneParam) => {
+            let num = parseInt(oneParam.Caption)
+
+            if (num > -1 && num < 11) {
+                newArray.push(oneParam)
+            }
+        })
+
+        setTimetablePar(newArray)
     }
 
     const handleScheduleRoom = async (id) => {
-        const scheduleData = await fetchSchudleRoom(id)
+        let scheduleData
+
+        if (isScheduleActual) {
+            scheduleData = await fetchSchudleRoom(id)
+        } else {
+            scheduleData = await fetchPermanetScheduleRoom(id, '20240604')
+        }
 
         filterScheduleRoom(scheduleData.Cells)
         filterNumRoom(id, rooms)
@@ -64,19 +87,44 @@ const ScheduleRoom = () => {
             setRooms(roomsData.Rooms)
             filterScheduleRoom(scheduleData.Cells)
             filterNumRoom(id, roomsData.Rooms)
+
+            setTimeout(() => setLoader(false), 300)
         }
 
+        const getTimetableData = async () => {
+            const timetableData = await fetchTimetablePar()
+
+            filterTimetableParam(timetableData.HourDefinitions)
+        }
+
+        getTimetableData()
         getRoomsAndSchedule()
     }, [])
 
+    useEffect(() => {
+        const effectSchedule = async () => {
+            let scheduleData
+
+            if (isScheduleActual) {
+                scheduleData = await fetchSchudleRoom(room.id)
+            } else {
+                scheduleData = await fetchPermanetScheduleRoom(room.id, '20240604')
+            }
+
+            filterScheduleRoom(scheduleData.Cells)
+        }
+
+        effectSchedule()
+    }, [isScheduleActual, room.id])
+
     return (
         <>
-            <SidePanel>
+            <SidePanel active={loader}>
                 <div className='sidepanel-scheduleroom'>
                     {rooms.map(({ Abbrev, ID, Building }) => {
                         if (Building === '1N') {
                             return (
-                                <div key={ID} className={Abbrev === room ? 'active-room' : ''} onClick={() => handleScheduleRoom(ID)}>
+                                <div key={ID} className={Abbrev === room.room ? 'active-room' : ''} onClick={() => handleScheduleRoom(ID)}>
                                     {Abbrev}
                                 </div>
                             )
@@ -87,9 +135,20 @@ const ScheduleRoom = () => {
                 </div>
             </SidePanel>
             <div className='container-schedule'>
-                <h1>Místnot: {room}</h1>
+                <h1>Místnot: {room.room}</h1>
                 <div id='schedule'>
-                    <div id='schedule-time'><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></div>
+                    <div id='schedule-time'>
+                        {
+                            timetablePar.map((oneParam) => {
+                                return (
+                                    <div key={oneParam.Caption} className='one-param'>
+                                        <span>{oneParam.Caption}</span>
+                                        <span>{`${oneParam.BeginTime} - ${oneParam.EndTime}`}</span>
+                                    </div>
+                                )
+                            })
+                        }
+                    </div>
                     {
                         ['PO', 'ÚT', 'ST', 'ČT', 'PÁ'].map((oneDay, index) => {
                             return (
@@ -112,7 +171,12 @@ const ScheduleRoom = () => {
                         })
                     }
                 </div>
+                <div>
+                    <button onClick={() => setIsScheduleActual(true)}>Aktuální rozvrh</button>
+                    <button onClick={() => setIsScheduleActual(false)}>Stálý rozvrh</button>
+                </div>
             </div>
+            <Loader loader={loader} />
         </>
     )
 }

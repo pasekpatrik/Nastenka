@@ -22,3 +22,16 @@ a {
     color: var(--third-color);
     text-decoration: none;
 }
+
+::-webkit-scrollbar {
+    width: 7px;
+}
+
+/* ::-webkit-scrollbar-track {
+    background-color: var(--secondary-color);
+} */
+
+::-webkit-scrollbar-thumb {
+    background-color: var(--secondary-color);
+    border-radius: 8px;
+}

@@ -11,6 +11,8 @@ nav {
 
     display: grid;
     grid-template: repeat(5, 20%) / repeat(4, 25%);
+
+    z-index: 9999;
 }
 
 nav #logo {

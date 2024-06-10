@@ -25,6 +25,6 @@ npm run lint
 
 ## Knihovny
 
-### React-icons - https://react-icons.github.io/react-icons/
-### React-router - https://reactrouter.com/en/main
-### React-spinners - https://www.davidhu.io/react-spinners/ 
+React-icons - https://react-icons.github.io/react-icons/<br>
+React-router - https://reactrouter.com/en/main<br>
+React-spinners - https://www.davidhu.io/react-spinners/ 
