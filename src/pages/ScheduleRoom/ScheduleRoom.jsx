@@ -4,6 +4,7 @@ import { defData, defStateData } from './defaultData'
 
 import SidePanel from '../../components/SidePanel/SidePanel'
 import Loader from '../../components/Loader/Loader'
+import Button from '../../components/Button/Button'
 
 import './ScheduleRoom.css'
 
@@ -135,13 +136,13 @@ const ScheduleRoom = () => {
                 </div>
             </SidePanel>
             <div className='container-schedule'>
-                <h1>Místnot: {room.room}</h1>
+                <h1>Místnost: {room.room}</h1>
                 <div id='schedule'>
                     <div id='schedule-time'>
                         {
-                            timetablePar.map((oneParam) => {
+                            timetablePar.map((oneParam, index) => {
                                 return (
-                                    <div key={oneParam.Caption} className='one-param'>
+                                    <div key={index} className='one-param'>
                                         <span>{oneParam.Caption}</span>
                                         <span>{`${oneParam.BeginTime} - ${oneParam.EndTime}`}</span>
                                     </div>
@@ -152,28 +153,29 @@ const ScheduleRoom = () => {
                     {
                         ['PO', 'ÚT', 'ST', 'ČT', 'PÁ'].map((oneDay, index) => {
                             return (
-                                <>
-                                    <h3 key={index}>{oneDay}</h3>
-                                    <div className='day-grid' id={oneDay}>
-                                        {
-                                            schedule[index].map((oneSubject, index) => {
-                                                return (
-                                                    <div key={index} className='subject'>
-                                                        <p>{oneSubject[0].Subject.Abbrev}</p>
-                                                        <p>{oneSubject[0].Teacher.Abbrev}</p>
-                                                    </div>
-                                                )
-                                            })
-                                        }
-                                    </div>
-                                </>
+                                <div key={index} className='day-grid'>
+                                    <h3 className='one-day'>{oneDay}</h3>
+                                    {
+                                        schedule[index].map((oneSubject, index) => {
+
+                                            return (
+                                                <div key={index} className='subject'>
+                                                    <span>{oneSubject.length === 2 ? `${oneSubject[0].Class.Abbrev}  ${oneSubject[1].Class.Abbrev}` : oneSubject[0].Class.Abbrev}</span>
+                                                    <span>{oneSubject[0].Subject.Abbrev}</span>
+                                                    <span>{oneSubject[0].Teacher.Abbrev}</span>
+                                                    <span>{oneSubject.length === 2 ? `${oneSubject[0].Group.Abbrev}  ${oneSubject[1].Group.Abbrev}` : oneSubject[0].Group.Abbrev}</span>
+                                                </div>
+                                            )
+                                        })
+                                    }
+                                </div>
                             )
                         })
                     }
                 </div>
-                <div>
-                    <button onClick={() => setIsScheduleActual(true)}>Aktuální rozvrh</button>
-                    <button onClick={() => setIsScheduleActual(false)}>Stálý rozvrh</button>
+                <div className='container-btn'>
+                    <Button onClick={() => setIsScheduleActual(true)} active={isScheduleActual}>Aktuální rozvrh</Button>
+                    <Button onClick={() => setIsScheduleActual(false)} active={!isScheduleActual}>Stálý rozvrh</Button>
                 </div>
             </div>
             <Loader loader={loader} />

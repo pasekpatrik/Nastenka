@@ -1,12 +1,7 @@
-.active-room {
-    color: var(--secondary-color);
-    transition: all .3s;
-}
-
 .sidepanel-scheduleroom {
     font-size: 20px;
     color: var(--third-color);
-    padding: 28px 0 28px  0;
+    padding: 28px 0 28px 0;
 
     display: flex;
     justify-content: center;
@@ -17,6 +12,11 @@
     gap: 6px;
 }
 
+.sidepanel-scheduleroom .active-room {
+    color: var(--secondary-color);
+    transition: all .3s;
+}
+
 .container-schedule {
     width: 100%;
     height: 100vh;
@@ -24,54 +24,114 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
-}
-
-.container-schedule #schedule {
-    border: 2px solid blue;
-    height: 600px;
-    width: 1000px;
-
-    display: grid;
-    grid-template: repeat(6, 16.8%) / repeat(10, 10%);
-}
-
-.container-schedule #schedule #schedule-time {
-    border: 2px solid red;
-    grid-column: 1 / 11;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.container-schedule #schedule #schedule-time .one-param {
-    border: 2px solid black;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
 
     flex-direction: column;
-}
-
-.container-schedule #schedule .day-grid {
-    border: 2px solid green;
-    grid-column: 2 / 11;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
     gap: 24px;
 }
 
-.container-schedule #schedule .subject {
-    height: 50px;
-    width: 50px;
+.container-schedule h1 {
+    color: var(--secondary-color);
+}
+
+.container-schedule #schedule {
+    height: 600px;
+    width: 1200px;
+
+    /* color: var(--third-color); */
+
+    display: grid;
+    grid-template: repeat(6, 16.7%) / repeat(12, 8.33%);
+}
+
+.container-schedule #schedule #schedule-time {
+    color: var(--third-color);
+    grid-column: 2 / 13;
+
+    display: grid;
+    grid-template-columns: repeat(11, 9.1%);
+}
+
+.container-schedule #schedule #schedule-time .one-param {
+    width: 100%;
+
+    border-radius: 30px 30px 0 0;
+    background-color: var(--primary-color);
 
     display: flex;
     justify-content: center;
     align-items: center;
 
     flex-direction: column;
+}
+
+.container-schedule #schedule #schedule-time .one-param span:nth-child(1) {
+    font-size: 18px;
+}
+
+.container-schedule #schedule #schedule-time .one-param span:nth-child(2) {
+    font-size: 12px;
+}
+
+.container-schedule #schedule .day-grid {
+    grid-column: 1 / 13;
+
+    display: grid;
+    grid-template-columns: repeat(12, 8.33%);
+
+    justify-items: center;
+    align-items: center;
+}
+
+.container-schedule #schedule .day-grid .one-day {
+    border: 2px solid red;
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+}
+
+.container-schedule #schedule .day-grid .subject {
+    height: 100%;
+    width: 100%;
+    padding: 2px;
+
+    border: 2px solid var(--third-color);
+    background-color: var(--fourth-color);
+
+    display: grid;
+    grid-template: repeat(5, 20%) / repeat(5, 20%);
+}
+
+.container-schedule #schedule .day-grid .subject span:nth-child(1) {
+    font-size: 12px;
+}
+
+.container-schedule #schedule .day-grid .subject span:nth-child(2) {
+    font-size: 21px;
+    grid-column: 2 / 5;
+    grid-row: 2 / 5;
+
+    justify-self: center;
+    align-self: center;
+}
+
+.container-schedule #schedule .day-grid .subject span:nth-child(3) {
+    font-size: 12px;
+    grid-column: 2 / 5;
+    grid-row: 4 / 6;
+
+    justify-self: center;
+    align-self: center;
+}
+
+.container-schedule #schedule .day-grid .subject span:nth-child(4) {
+    font-size: 10px;
+    text-align: end;
+
+    grid-column: 4 / 6;
+    justify-self: end;
+}
+
+.container-schedule .container-btn {
+    display: flex;
+    gap: 20px;
 }

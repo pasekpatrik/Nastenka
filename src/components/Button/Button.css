@@ -1,0 +1,20 @@
+.btn {
+    height: 50px;
+    width: 200px;
+
+    font-size: 18px;
+    color: var(--primary-color);
+
+    border: 2px solid var(--primary-color);
+    border-radius: 0 8px 0 8px;
+    background-color: var(--third-color);
+
+    transition: all .5s;
+    cursor: pointer;
+}
+
+.btn.active-btn {
+    background-color: var(--primary-color);
+    color: var(--third-color);
+    box-shadow: var(--shadow);
+}
