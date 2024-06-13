@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, memo } from 'react'
 import { NavLink } from 'react-router-dom'
 import { HiAcademicCap, HiUser } from 'react-icons/hi2'
 
@@ -7,7 +7,7 @@ import { getCurrentTime } from '../../modules/module'
 import './NavBar.css'
 import logo from '../../assets/logo.png'
 
-const NavBar = () => {
+const NavBar = memo(function NavBar () {
     const [now, setNow] = useState(getCurrentTime)
 
     useEffect(() => {
@@ -34,6 +34,6 @@ const NavBar = () => {
             </nav>
         </>
     )
-}
+})
 
 export default NavBar

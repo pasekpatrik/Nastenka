@@ -1,6 +1,9 @@
+import { memo } from 'react'
+
 import './SidePanel.css'
 
-const SidePanel = ({ children, className, active }) => {
+const SidePanel = memo(function SidePanel({ children, className, active }) {
+
     return (
         <>
             <div id='side-panel' className={active ? className : `${className} active-panel`}>
@@ -8,6 +11,6 @@ const SidePanel = ({ children, className, active }) => {
             </div>
         </>
     )
-}
+})
 
 export default SidePanel

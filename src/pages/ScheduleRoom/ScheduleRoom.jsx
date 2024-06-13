@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { fetchRooms, fetchTimetablePar, fetchSchudleRoom, fetchPermanetScheduleRoom } from '../../modules/api'
 import { defData, defStateData } from './defaultData'
 
@@ -27,17 +27,7 @@ const ScheduleRoom = () => {
         })
 
         paramSchedule.forEach(({ DayIndex, HourIndex, Atoms }) => {
-            if (DayIndex === 0) {
-                allDays[DayIndex].splice(HourIndex - 2, 1, Atoms)
-            } else if (DayIndex === 1) {
-                allDays[DayIndex].splice(HourIndex - 2, 1, Atoms)
-            } else if (DayIndex === 2) {
-                allDays[DayIndex].splice(HourIndex - 2, 1, Atoms)
-            } else if (DayIndex === 3) {
-                allDays[DayIndex].splice(HourIndex - 2, 1, Atoms)
-            } else if (DayIndex === 4) {
-                allDays[DayIndex].splice(HourIndex - 2, 1, Atoms)
-            }
+            allDays[DayIndex].splice(HourIndex - 2, 1, Atoms)
         })
 
         setSchedule(allDays)
@@ -174,8 +164,8 @@ const ScheduleRoom = () => {
                     }
                 </div>
                 <div className='container-btn'>
-                    <Button onClick={() => setIsScheduleActual(true)} active={isScheduleActual}>Aktuální rozvrh</Button>
-                    <Button onClick={() => setIsScheduleActual(false)} active={!isScheduleActual}>Stálý rozvrh</Button>
+                    <Button onClick={useCallback(() => setIsScheduleActual(true), [])} active={isScheduleActual}>Aktuální rozvrh</Button>
+                    <Button onClick={useCallback(() => setIsScheduleActual(false), [])} active={!isScheduleActual}>Stálý rozvrh</Button>
                 </div>
             </div>
             <Loader loader={loader} />

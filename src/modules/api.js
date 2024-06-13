@@ -18,7 +18,7 @@ const fetchData = async (api) => {
 
         return data
     } catch (error) {
-        console.error(error)
+        console.error(`Nový error: ${error}`)
     }
 }
 
