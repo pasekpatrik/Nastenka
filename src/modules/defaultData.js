@@ -1,4 +1,4 @@
-export const defStateData = [[], [], [], [], [], [], [], [], [], [], []]
+export const initialData = [[], [], [], [], [], [], [], [], [], [], []]
 
 export const defData = [
     {

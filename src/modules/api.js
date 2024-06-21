@@ -22,17 +22,32 @@ const fetchData = async (api) => {
     }
 }
 
-// Místnosti
-export const fetchRooms = async () => await fetchData('https://bakalari.oadusni.cz/bakaweb/if/2/common/rooms')
-
 // Hodiny a čas jednotlivých hodin
 export const fetchTimetablePar = async () => await fetchData('https://bakalari.oadusni.cz/bakaweb/if/2/timetable/parameters')
 
-// Suplování | čas formát- 20240604
-export const fetchSubstitution = async (time) => await fetchData(`https://bakalari.oadusni.cz/bakaweb/if/2/substitutions/public/${time}`)
+
+//////////////////
+// Místnosti
+export const fetchRooms = async () => await fetchData('https://bakalari.oadusni.cz/bakaweb/if/2/common/rooms')
+
+// Stálý rozvrh místnosti | čas formát- 20240604
+export const fetchPermanetScheduleRoom = async (id) => await fetchData(`https://bakalari.oadusni.cz/bakaweb/if/2/timetable/permanent/room/${id}`)
 
 // Aktuální rozvrh místnosti
-export const fetchSchudleRoom = async (id) => await fetchData(`https://bakalari.oadusni.cz/bakaweb/if/2/timetable/actual/room/${id}`)
+export const fetchActualSchudleRoom = async (id) => await fetchData(`https://bakalari.oadusni.cz/bakaweb/if/2/timetable/actual/room/${id}`)
 
-// Permanetní rozvrh místnosti | čas formát- 20240604
-export const fetchPermanetScheduleRoom = async (id, time) => await fetchData(`https://bakalari.oadusni.cz/bakaweb/if/2/timetable/permanent/room/${id}?date=${time}`)
+
+///////////////////
+// Třídy
+export const fetchClasses = async () => await fetchData('https://bakalari.oadusni.cz/bakaweb/if/2/common/classes')
+
+// Stálý rozvrh třídy
+export const fetchPermanetScheduleClasses = async (id) => await fetchData(`https://bakalari.oadusni.cz/bakaweb/if/2/timetable/permanent/class/${id}`)
+
+// Aktualání rozvrh třídy
+export const fetchActualScheduleClasses = async (id) => await fetchData(`https://bakalari.oadusni.cz/bakaweb/if/2/timetable/actual/class/${id}`)
+
+
+//////////////////////
+// Suplování | čas formát- 20240604
+export const fetchSubstitution = async (time) => await fetchData(`https://bakalari.oadusni.cz/bakaweb/if/2/substitutions/public/${time}`)

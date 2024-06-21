@@ -1,16 +1,17 @@
-.active-room {
+.active-class {
     color: var(--secondary-color);
     transition: all .3s;
 }
 
-#sidepanel-scheduleroom {
-    padding: 28px 0 28px 0;
+#sidepanel-scheduleClass {
+    height: 100vh;
 
     display: flex;
     justify-content: center;
     align-items: center;
 
     flex-direction: column;
+    gap: 10px;
 
-    gap: 6px;
+    direction: ltr;
 }

@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
-import { fetchRooms, fetchPermanetScheduleRoom, fetchActualSchudleRoom } from '../../modules/api'
+import { fetchClasses, fetchActualScheduleClasses, fetchPermanetScheduleClasses } from '../../modules/api'
 import { initialData } from '../../modules/defaultData'
 import { filterSchedule, filterAbbrev } from '../../modules/module'
 
@@ -7,47 +7,47 @@ import Schedule from '../../components/Schedule/Schedule'
 import SidePanel from '../../components/SidePanel/SidePanel'
 import Loader from '../../components/Loader/Loader'
 
-import './ScheduleRoom.css'
+import './ScheduleClass.css'
 
-const ScheduleRoom = () => {
+const ScheduleClass = () => {
     const [loader, setLoader] = useState(true)
 
-    const [abberv, setAbbrev] = useState({ id: '', abbrev: '' })
-    const [rooms, setRooms] = useState([])
+    const [abbrev, setAbbrev] = useState({ id: '', abbrev: '' })
+    const [classes, setClasses] = useState([])
 
     const [schedule, setSchedule] = useState(initialData)
     const [isScheduleActual, setIsScheduleActual] = useState(true)
 
-    const filterIsScheduleActual = async (id) => isScheduleActual ? await fetchActualSchudleRoom(id) : await fetchPermanetScheduleRoom(id)
+    const filterIsScheduleActual = async (id) => isScheduleActual ? await fetchActualScheduleClasses(id) : await fetchPermanetScheduleClasses(id)
 
-    const handleScheduleRoom = async (id) => {
+    const handleScheduleClass = async (id) => {
         const scheduleData = await filterIsScheduleActual(id)
 
         filterSchedule(scheduleData.Cells, setSchedule)
-        filterAbbrev(id, rooms, setAbbrev)
+        filterAbbrev(id, classes, setAbbrev)
     }
 
     useEffect(() => {
-        const getRoomsAndSchedule = async () => {
-            const roomsData = await fetchRooms()
-            const id = roomsData.Rooms[1].ID
+        const getClassesAndSchedule = async () => {
+            const classesData = await fetchClasses()
+            const id = classesData.Classes[0].ID
 
-            const scheduleData = await fetchActualSchudleRoom(id)
+            const scheduleData = await fetchActualScheduleClasses(id)
 
-            setRooms(roomsData.Rooms)
+            setClasses(classesData.Classes)
 
             filterSchedule(scheduleData.Cells, setSchedule)
-            filterAbbrev(id, roomsData.Rooms, setAbbrev)
+            filterAbbrev(id, classesData.Classes, setAbbrev)
 
             setTimeout(() => setLoader(false), 300)
         }
 
-        getRoomsAndSchedule()
+        getClassesAndSchedule()
     }, [])
 
     useEffect(() => {
         const effectSchedule = async () => {
-            const scheduleData = await filterIsScheduleActual(abberv.id)
+            const scheduleData = await filterIsScheduleActual(abbrev.id)
 
             filterSchedule(scheduleData.Cells, setSchedule)
         }
@@ -59,12 +59,12 @@ const ScheduleRoom = () => {
     return (
         <>
             <SidePanel active={loader}>
-                <div id='sidepanel-scheduleroom'>
+                <div id='sidepanel-scheduleClass'>
                     {
-                        rooms.map(({ Abbrev, ID, Building }) => {
-                            if (Building === '1N') {
+                        classes.map(({ ID, Abbrev }) => {
+                            if (Abbrev[0] !== '0') {
                                 return (
-                                    <div key={ID} className={Abbrev === abberv.abbrev ? 'active-room' : ''} onClick={() => handleScheduleRoom(ID)}>
+                                    <div key={ID} className={Abbrev === abbrev.abbrev ? 'active-class' : ''} onClick={() => handleScheduleClass(ID)}>
                                         {Abbrev}
                                     </div>
                                 )
@@ -77,7 +77,7 @@ const ScheduleRoom = () => {
             </SidePanel>
             <Schedule
                 schedule={schedule}
-                heading={`Místnost ${abberv.abbrev}`}
+                heading={`Třída ${abbrev.abbrev}`}
                 isActual={isScheduleActual}
                 isActualClick={useCallback(() => setIsScheduleActual(!isScheduleActual), [isScheduleActual])}
             />
@@ -86,4 +86,4 @@ const ScheduleRoom = () => {
     )
 }
 
-export default ScheduleRoom
+export default ScheduleClass
