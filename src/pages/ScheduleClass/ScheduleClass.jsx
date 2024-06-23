@@ -4,13 +4,11 @@ import { initialData } from '../../modules/defaultData'
 import { filterSchedule, filterAbbrev } from '../../modules/module'
 
 import Schedule from '../../components/Schedule/Schedule'
-import SidePanel from '../../components/SidePanel/SidePanel'
-import Loader from '../../components/Loader/Loader'
 
 import './ScheduleClass.css'
 
 const ScheduleClass = () => {
-    const [loader, setLoader] = useState(true)
+    const [ready, setReady] = useState(false)
 
     const [abbrev, setAbbrev] = useState({ id: '', abbrev: '' })
     const [classes, setClasses] = useState([])
@@ -23,8 +21,8 @@ const ScheduleClass = () => {
     const handleScheduleClass = async (id) => {
         const scheduleData = await filterIsScheduleActual(id)
 
-        filterSchedule(scheduleData.Cells, setSchedule)
-        filterAbbrev(id, classes, setAbbrev)
+        setSchedule(filterSchedule(scheduleData.Cells))
+        setAbbrev(filterAbbrev(id, classes))
     }
 
     useEffect(() => {
@@ -36,10 +34,10 @@ const ScheduleClass = () => {
 
             setClasses(classesData.Classes)
 
-            filterSchedule(scheduleData.Cells, setSchedule)
-            filterAbbrev(id, classesData.Classes, setAbbrev)
+            setSchedule(filterSchedule(scheduleData.Cells))
+            setAbbrev(filterAbbrev(id, classesData.Classes))
 
-            setTimeout(() => setLoader(false), 300)
+            setReady(true)
         }
 
         getClassesAndSchedule()
@@ -49,7 +47,7 @@ const ScheduleClass = () => {
         const effectSchedule = async () => {
             const scheduleData = await filterIsScheduleActual(abbrev.id)
 
-            filterSchedule(scheduleData.Cells, setSchedule)
+            setSchedule(filterSchedule(scheduleData.Cells))
         }
 
         effectSchedule()
@@ -58,7 +56,14 @@ const ScheduleClass = () => {
 
     return (
         <>
-            <SidePanel active={loader}>
+            <Schedule
+                type='class'
+                schedule={schedule}
+                heading={`Třída ${abbrev.abbrev}`}
+                isActual={isScheduleActual}
+                isActualClick={useCallback(() => setIsScheduleActual(!isScheduleActual), [isScheduleActual])}
+                isLoader={ready}
+            >
                 <div id='sidepanel-scheduleClass'>
                     {
                         classes.map(({ ID, Abbrev }) => {
@@ -74,14 +79,7 @@ const ScheduleClass = () => {
                         })
                     }
                 </div>
-            </SidePanel>
-            <Schedule
-                schedule={schedule}
-                heading={`Třída ${abbrev.abbrev}`}
-                isActual={isScheduleActual}
-                isActualClick={useCallback(() => setIsScheduleActual(!isScheduleActual), [isScheduleActual])}
-            />
-            <Loader loader={loader} />
+            </Schedule>
         </>
     )
 }

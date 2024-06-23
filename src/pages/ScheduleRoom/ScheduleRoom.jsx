@@ -4,13 +4,11 @@ import { initialData } from '../../modules/defaultData'
 import { filterSchedule, filterAbbrev } from '../../modules/module'
 
 import Schedule from '../../components/Schedule/Schedule'
-import SidePanel from '../../components/SidePanel/SidePanel'
-import Loader from '../../components/Loader/Loader'
 
 import './ScheduleRoom.css'
 
 const ScheduleRoom = () => {
-    const [loader, setLoader] = useState(true)
+    const [ready, setReady] = useState(false)
 
     const [abberv, setAbbrev] = useState({ id: '', abbrev: '' })
     const [rooms, setRooms] = useState([])
@@ -23,8 +21,8 @@ const ScheduleRoom = () => {
     const handleScheduleRoom = async (id) => {
         const scheduleData = await filterIsScheduleActual(id)
 
-        filterSchedule(scheduleData.Cells, setSchedule)
-        filterAbbrev(id, rooms, setAbbrev)
+        setSchedule(filterSchedule(scheduleData.Cells))
+        setAbbrev(filterAbbrev(id, rooms))
     }
 
     useEffect(() => {
@@ -36,10 +34,10 @@ const ScheduleRoom = () => {
 
             setRooms(roomsData.Rooms)
 
-            filterSchedule(scheduleData.Cells, setSchedule)
-            filterAbbrev(id, roomsData.Rooms, setAbbrev)
+            setSchedule(filterSchedule(scheduleData.Cells))
+            setAbbrev(filterAbbrev(id, roomsData.Rooms))
 
-            setTimeout(() => setLoader(false), 300)
+            setReady(true)
         }
 
         getRoomsAndSchedule()
@@ -49,7 +47,7 @@ const ScheduleRoom = () => {
         const effectSchedule = async () => {
             const scheduleData = await filterIsScheduleActual(abberv.id)
 
-            filterSchedule(scheduleData.Cells, setSchedule)
+            setSchedule(filterSchedule(scheduleData.Cells))
         }
 
         effectSchedule()
@@ -58,7 +56,14 @@ const ScheduleRoom = () => {
 
     return (
         <>
-            <SidePanel active={loader}>
+            <Schedule
+                type='room'
+                schedule={schedule}
+                heading={`Místnost ${abberv.abbrev}`}
+                isActual={isScheduleActual}
+                isActualClick={useCallback(() => setIsScheduleActual(!isScheduleActual), [isScheduleActual])}
+                isLoader={ready}
+            >
                 <div id='sidepanel-scheduleroom'>
                     {
                         rooms.map(({ Abbrev, ID, Building }) => {
@@ -74,14 +79,7 @@ const ScheduleRoom = () => {
                         })
                     }
                 </div>
-            </SidePanel>
-            <Schedule
-                schedule={schedule}
-                heading={`Místnost ${abberv.abbrev}`}
-                isActual={isScheduleActual}
-                isActualClick={useCallback(() => setIsScheduleActual(!isScheduleActual), [isScheduleActual])}
-            />
-            <Loader loader={loader} />
+            </Schedule>
         </>
     )
 }

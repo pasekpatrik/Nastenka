@@ -6,5 +6,6 @@ export const defData = [
         Teacher: { Abbrev: '' },
         Class: { Abbrev: '' },
         Group: { Abbrev: '' },
+        Room: { Abbrev: '' },
     },
 ]

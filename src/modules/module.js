@@ -1,4 +1,4 @@
-import { defData } from "./defaultData"
+import { defData } from './defaultData'
 
 export const getCurrentTime = () => {
     const date = new Date()
@@ -6,7 +6,7 @@ export const getCurrentTime = () => {
     return { hours: date.getHours(), minutes: date.getMinutes(), seconds: date.getSeconds() }
 }
 
-export const filterSchedule = (parSchedule, setState) => {
+export const filterSchedule = (parSchedule) => {
     let allDays = [[], [], [], [], []]
 
     allDays.forEach((oneDay) => {
@@ -17,13 +17,22 @@ export const filterSchedule = (parSchedule, setState) => {
 
     parSchedule.forEach(({ DayIndex, HourIndex, Atoms }) => allDays[DayIndex].splice(HourIndex - 2, 1, Atoms))
 
-    setState(allDays)
+    return allDays
 }
 
-export const filterAbbrev = (id, abbrevs, setState) => {
+export const filterAbbrev = (id, abbrevs) => {
     const result = abbrevs.filter((oneClass) => {
         return oneClass.ID === id
     })
 
-    setState({ id: id, abbrev: result[0].Abbrev })
+    return { id: id, abbrev: result[0].Abbrev }
+}
+
+export const filterTimetableParam = (paramTimetable) => {
+    const result = paramTimetable.filter((oneParam) => {
+        let num = parseInt(oneParam.Caption)
+        return num > -1 && num < 11
+    })
+
+    return result
 }

@@ -58,11 +58,11 @@ nav #container-nav-links svg {
 }
 
 nav #time {
+    font-size: 30px;
+
     grid-row: 5 / 6;
     grid-column: 1 / 5;
 
     justify-self: center;
     align-self: center;
-
-    font-size: 26px;
 }

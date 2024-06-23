@@ -1,6 +1,6 @@
 import { useState, useEffect, memo } from 'react'
 import { NavLink } from 'react-router-dom'
-import { HiAcademicCap, HiUser } from 'react-icons/hi2'
+import { HiAcademicCap, HiUser, HiBookOpen } from 'react-icons/hi2'
 import { MdMeetingRoom } from 'react-icons/md'
 
 import { getCurrentTime } from '../../modules/module'
@@ -29,6 +29,10 @@ const NavBar = memo(function NavBar() {
                     <NavLink to='scheduleclasses' className='link'>
                         <HiAcademicCap />
                         <span>Rozvrh Tříd</span>
+                    </NavLink>
+                    <NavLink to='scheduleteachers' className='link'>
+                        <HiBookOpen />
+                        <span>Rozvrh učitelů</span>
                     </NavLink>
                     <NavLink to='schedulerooms' className='link'>
                         <MdMeetingRoom />
