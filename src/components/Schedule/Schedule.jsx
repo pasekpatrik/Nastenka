@@ -1,32 +1,14 @@
-import { useState, useEffect } from 'react'
-import { fetchTimetablePar } from '../../modules/api'
-import { filterTimetableParam } from '../../modules/module'
 import { Popover } from 'antd'
-
 import PropTypes from 'prop-types'
 
 import SidePanel from '../SidePanel/SidePanel'
 import Button from '../Button/Button'
 import Loader from '../Loader/Loader'
+import Content from '../Content/Content'
 
 import './Schedule.css'
 
-const Schedule = ({ type, schedule, heading, isActual, isActualClick, isLoader, children }) => {
-    const [loader, setLoader] = useState(true)
-    const [timetablePar, setTimetablePar] = useState([])
-
-    useEffect(() => {
-        const getTimetableData = async () => {
-            const timetableData = await fetchTimetablePar()
-
-            setTimetablePar(filterTimetableParam(timetableData.HourDefinitions))
-
-            isLoader && setLoader(false)
-        }
-
-        getTimetableData()
-    }, [isLoader])
-
+const Schedule = ({ type, schedule, timetable, heading, isActual, isActualClick, children, loader }) => {
     return (
         <>
             <SidePanel active={loader}>
@@ -37,7 +19,7 @@ const Schedule = ({ type, schedule, heading, isActual, isActualClick, isLoader, 
                 <div id='schedule'>
                     <div id='schedule-time'>
                         {
-                            timetablePar.map((oneParam, index) => {
+                            timetable.map((oneParam, index) => {
                                 return (
                                     <div key={index} className='one-param'>
                                         <span>{oneParam.Caption}</span>
@@ -60,7 +42,16 @@ const Schedule = ({ type, schedule, heading, isActual, isActualClick, isLoader, 
                                                         {
                                                             oneSubject.map((subject, index) => {
                                                                 return (
-                                                                    <Popover key={index} title='Titulek 2' trigger='click'>
+                                                                    <Popover
+                                                                        key={index}
+                                                                        title={subject.Subject.Name}
+                                                                        trigger='click'
+                                                                        content={(<Content
+                                                                            teacher={subject.Teacher.Name}
+                                                                            room={subject.Room.Abbrev}
+                                                                            group={subject.Group.Abbrev}
+                                                                        />)}
+                                                                    >
                                                                         <div className='one-subject'>
                                                                             <span>{type === 'class' ? subject.Room.Abbrev : subject.Class.Abbrev}</span>
                                                                             <span>{subject.Subject.Abbrev}</span>
@@ -72,8 +63,17 @@ const Schedule = ({ type, schedule, heading, isActual, isActualClick, isLoader, 
                                                             })
                                                         }
                                                     </div> :
-                                                    <Popover title='Titulek' trigger='click'>
-                                                        <div key={index} className='subject'>
+                                                    <Popover
+                                                        key={index}
+                                                        title={oneSubject[0].Subject.Name}
+                                                        trigger='click'
+                                                        content={(oneSubject[0].Subject.Abbrev && <Content
+                                                            teacher={oneSubject[0].Teacher.Name}
+                                                            room={oneSubject[0].Room.Abbrev}
+                                                            group={oneSubject[0].Group.Abbrev !== 'celá' && oneSubject[0].Group.Abbrev}
+                                                        />)}
+                                                    >
+                                                        <div className='subject'>
                                                             <span>{type === 'class' ? oneSubject[0].Room.Abbrev : oneSubject[0].Class.Abbrev}</span>
                                                             <span>{oneSubject[0].Subject.Abbrev}</span>
                                                             <span>{oneSubject[0].Teacher.Abbrev}</span>
@@ -89,8 +89,8 @@ const Schedule = ({ type, schedule, heading, isActual, isActualClick, isLoader, 
                     }
                 </div>
                 <div className='container-btn'>
-                    <Button onClick={isActualClick} active={isActual}>Aktuální rozvrh</Button>
-                    <Button onClick={isActualClick} active={!isActual}>Stálý rozvrh</Button>
+                    <Button onClick={isActualClick.btn1} active={isActual}>Aktuální rozvrh</Button>
+                    <Button onClick={isActualClick.btn2} active={!isActual}>Stálý rozvrh</Button>
                 </div>
             </div>
             <Loader loader={loader} />
@@ -103,9 +103,10 @@ Schedule.propTypes = {
     schedule: PropTypes.array,
     heading: PropTypes.string,
     isActual: PropTypes.bool,
-    isActualClick: PropTypes.func,
-    isLoader: PropTypes.bool,
-    children: PropTypes.node
+    isActualClick: PropTypes.object,
+    timetable: PropTypes.array,
+    children: PropTypes.node,
+    loader: PropTypes.bool
 }
 
 export default Schedule

@@ -1,14 +1,15 @@
 import { useState, useEffect, useCallback } from 'react'
-import { fetchClasses, fetchActualScheduleClasses, fetchPermanetScheduleClasses } from '../../modules/api'
+import { fetchClasses, fetchActualScheduleClasses, fetchPermanetScheduleClasses, fetchTimetablePar } from '../../modules/api'
 import { initialData } from '../../modules/defaultData'
-import { filterSchedule, filterAbbrev } from '../../modules/module'
+import { filterSchedule, filterAbbrev, filterTimetableParam } from '../../modules/module'
 
 import Schedule from '../../components/Schedule/Schedule'
 
 import './ScheduleClass.css'
 
 const ScheduleClass = () => {
-    const [ready, setReady] = useState(false)
+    const [loader, setLoader] = useState(true)
+    const [timetablePar, setTimetablePar] = useState([])
 
     const [abbrev, setAbbrev] = useState({ id: '', abbrev: '' })
     const [classes, setClasses] = useState([])
@@ -32,12 +33,16 @@ const ScheduleClass = () => {
 
             const scheduleData = await fetchActualScheduleClasses(id)
 
+            const timetableData = await fetchTimetablePar()
+
+            setTimetablePar(filterTimetableParam(timetableData.HourDefinitions))
+
             setClasses(classesData.Classes)
 
             setSchedule(filterSchedule(scheduleData.Cells))
             setAbbrev(filterAbbrev(id, classesData.Classes))
 
-            setReady(true)
+            setTimeout(() => setLoader(false), 300)
         }
 
         getClassesAndSchedule()
@@ -59,10 +64,11 @@ const ScheduleClass = () => {
             <Schedule
                 type='class'
                 schedule={schedule}
+                timetable={timetablePar}
                 heading={`Třída ${abbrev.abbrev}`}
                 isActual={isScheduleActual}
-                isActualClick={useCallback(() => setIsScheduleActual(!isScheduleActual), [isScheduleActual])}
-                isLoader={ready}
+                isActualClick={{ btn1: useCallback(() => setIsScheduleActual(true), []), btn2: useCallback(() => setIsScheduleActual(false), []) }}
+                loader={loader}
             >
                 <div id='sidepanel-scheduleClass'>
                     {

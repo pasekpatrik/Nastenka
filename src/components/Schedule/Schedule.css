@@ -5,19 +5,22 @@
     display: flex;
     justify-content: center;
     align-items: center;
-
-    flex-direction: column;
-    gap: 40px;
 }
 
 .container-btn {
     display: flex;
     gap: 20px;
+
+    position: absolute;
+    bottom: 5%;
 }
 
 .container-schedule h1 {
     color: var(--secondary-color);
     font-size: 44px;
+
+    position: absolute;
+    top: 5%;
 }
 
 .container-schedule #schedule {
@@ -25,7 +28,7 @@
     width: 1300px;
 
     display: grid;
-    grid-template: repeat(6, 16.7%) / repeat(12, 8.33%);
+    grid-template: repeat(6, calc(100% / 6)) / repeat(12, calc(100% / 12));
 }
 
 .container-schedule #schedule #schedule-time {
@@ -33,7 +36,7 @@
     grid-column: 2 / 13;
 
     display: grid;
-    grid-template-columns: repeat(11, 9.1%);
+    grid-template-columns: repeat(11, calc(100% / 11));
 }
 
 .container-schedule #schedule #schedule-time .one-param {
@@ -51,7 +54,7 @@
 }
 
 .container-schedule #schedule #schedule-time .one-param:nth-child(11) {
-    border-right: 2px solid var(--third-color);
+    border-right: 1px solid var(--third-color);
 }
 
 .container-schedule #schedule #schedule-time .one-param span:nth-child(1) {
@@ -67,7 +70,7 @@
     grid-column: 1 / 13;
 
     display: grid;
-    grid-template-columns: repeat(12, 8.33%);
+    grid-template-columns: repeat(12, calc(100% / 12));
 
     justify-items: center;
     align-items: center;

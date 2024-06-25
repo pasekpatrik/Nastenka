@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom'
 import { HiAcademicCap, HiUser, HiBookOpen } from 'react-icons/hi2'
 import { MdMeetingRoom } from 'react-icons/md'
 
-import { getCurrentTime } from '../../modules/module'
+import { getCurrentTime, timeFormat } from '../../modules/module'
 
 import './NavBar.css'
 import logo from '../../assets/logo.png'
@@ -39,7 +39,7 @@ const NavBar = memo(function NavBar() {
                         <span>Rozvrh místností</span>
                     </NavLink>
                 </div>
-                <div id='time'>{`${now.hours}:${now.minutes}:${now.seconds}`}</div>
+                <div id='time'>{`${timeFormat(now.hours)}:${timeFormat(now.minutes)}:${timeFormat(now.seconds)}`}</div>
             </nav>
         </>
     )

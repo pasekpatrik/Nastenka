@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
 import SharedLayout from '../pages/SharedLayout/SharedLayout'
@@ -7,6 +8,10 @@ import ScheduleRoom from '../pages/ScheduleRoom/ScheduleRoom'
 import Substitution from '../pages/Substitution/Substitution'
 
 const App = () => {
+    useEffect(() =>{
+        setTimeout(() => location.replace(location.origin), 300000)
+    }, [])
+
     return (
         <>
             <BrowserRouter>

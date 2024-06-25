@@ -8,6 +8,7 @@
     --fifth-color: #E9F2F8;
 
     --shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    --cursor: url('assets/cursor.png'), default;
 }
 
 * {
@@ -18,11 +19,17 @@
 
 body {
     font-family: 'Poppins', sans-serif;
+    cursor: var(--cursor)
 }
 
 a {
     color: var(--third-color);
     text-decoration: none;
+    cursor: var(--cursor)
+}
+
+button {
+    cursor: var(--cursor)
 }
 
 ::-webkit-scrollbar {

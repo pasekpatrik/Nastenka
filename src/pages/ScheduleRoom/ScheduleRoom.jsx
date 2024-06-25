@@ -1,14 +1,15 @@
 import { useState, useEffect, useCallback } from 'react'
-import { fetchRooms, fetchPermanetScheduleRoom, fetchActualSchudleRoom } from '../../modules/api'
+import { fetchRooms, fetchPermanetScheduleRoom, fetchActualSchudleRoom, fetchTimetablePar } from '../../modules/api'
 import { initialData } from '../../modules/defaultData'
-import { filterSchedule, filterAbbrev } from '../../modules/module'
+import { filterSchedule, filterAbbrev, filterTimetableParam } from '../../modules/module'
 
 import Schedule from '../../components/Schedule/Schedule'
 
 import './ScheduleRoom.css'
 
 const ScheduleRoom = () => {
-    const [ready, setReady] = useState(false)
+    const [loader, setLoader] = useState(true)
+    const [timetablePar, setTimetablePar] = useState([])
 
     const [abberv, setAbbrev] = useState({ id: '', abbrev: '' })
     const [rooms, setRooms] = useState([])
@@ -32,12 +33,16 @@ const ScheduleRoom = () => {
 
             const scheduleData = await fetchActualSchudleRoom(id)
 
+            const timetableData = await fetchTimetablePar()
+
+            setTimetablePar(filterTimetableParam(timetableData.HourDefinitions))
+
             setRooms(roomsData.Rooms)
 
             setSchedule(filterSchedule(scheduleData.Cells))
             setAbbrev(filterAbbrev(id, roomsData.Rooms))
 
-            setReady(true)
+            setTimeout(() => setLoader(false), 300)
         }
 
         getRoomsAndSchedule()
@@ -59,10 +64,11 @@ const ScheduleRoom = () => {
             <Schedule
                 type='room'
                 schedule={schedule}
+                timetable={timetablePar}
                 heading={`Místnost ${abberv.abbrev}`}
                 isActual={isScheduleActual}
-                isActualClick={useCallback(() => setIsScheduleActual(!isScheduleActual), [isScheduleActual])}
-                isLoader={ready}
+                isActualClick={{btn1: useCallback(() => setIsScheduleActual(true), []), btn2: useCallback(() => setIsScheduleActual(false), [])}}
+                loader={loader}
             >
                 <div id='sidepanel-scheduleroom'>
                     {

@@ -1,0 +1,43 @@
+#substitution {
+    border: 2px solid red;
+    min-height: 500px;
+    max-height: auto;
+    width: 800px;
+
+    display: grid;
+    grid-template: auto / repeat(5, 20%);
+}
+
+#substitution #params {
+    border: 2px solid blue;
+
+    grid-column: 1 / 6;
+
+    display: grid;
+    grid-template-columns: repeat(5, 20%);
+    justify-items: center;
+    align-items: center;
+}
+
+#substitution .one-class {
+    border: 2px solid green;
+    min-height: 32px;
+    max-height: auto;
+    grid-column: 1 / 6;
+
+    display: grid;
+    grid-template-columns: repeat(5, 20%);
+    justify-items: center;
+    align-items: center;
+}
+
+#substitution .one-class .one-lesson {
+    border: 2px solid fuchsia;
+    width: 100%;
+    grid-column: 2 / 6;
+    
+    display: grid;
+    grid-template-columns: repeat(4, 25%);
+    justify-items: center;
+    align-items: center;
+}
