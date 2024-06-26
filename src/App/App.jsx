@@ -9,7 +9,7 @@ import Substitution from '../pages/Substitution/Substitution'
 
 const App = () => {
     useEffect(() =>{
-        setTimeout(() => location.replace(location.origin), 300000)
+        setTimeout(() => location.replace(location.href), 300000)
     }, [])
 
     return (

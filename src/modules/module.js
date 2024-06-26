@@ -6,7 +6,9 @@ export const getCurrentTime = () => {
     return { hours: date.getHours(), minutes: date.getMinutes(), seconds: date.getSeconds() }
 }
 
-export const timeFormat = (time) => time.toString().length != 2 ? '0' + time : time 
+export const scroll = (element, top) => element.scrollTo({ top: top, behavior: 'smooth' })
+
+export const timeFormat = (time) => time.toString().length != 2 ? '0' + time : time
 
 export const filterSchedule = (parSchedule) => {
     let allDays = [[], [], [], [], []]

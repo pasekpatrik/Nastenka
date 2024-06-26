@@ -5,7 +5,6 @@
     --secondary-color: #f4a024;
     --third-color: #fff;
     --fourth-color: #EAEAEA;
-    --fifth-color: #E9F2F8;
 
     --shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     --cursor: url('assets/cursor.png'), default;
@@ -30,17 +29,4 @@ a {
 
 button {
     cursor: var(--cursor)
-}
-
-::-webkit-scrollbar {
-    width: 7px;
-}
-
-/* ::-webkit-scrollbar-track {
-    background-color: var(--secondary-color);
-} */
-
-::-webkit-scrollbar-thumb {
-    background-color: var(--secondary-color);
-    border-radius: 8px;
 }

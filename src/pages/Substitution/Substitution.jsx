@@ -20,7 +20,7 @@ const Substitution = () => {
         getSubstitution()
     }, [])
 
-    console.log(substitution.ChangesForClasses)
+    console.log(substitution)
 
     return (
         <>

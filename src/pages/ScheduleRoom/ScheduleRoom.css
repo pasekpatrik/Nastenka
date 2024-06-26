@@ -3,14 +3,49 @@
     transition: all .3s;
 }
 
-#sidepanel-scheduleroom {
-    padding: 28px 0 28px 0;
+#container-sidepanel-scheduleroom {
+    height: 100vh;
 
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
 
     flex-direction: column;
+    gap: 4px;
+}
 
-    gap: 6px;
+#container-sidepanel-scheduleroom .arrow {
+    font-size: 62px;
+    visibility: hidden;
+}
+
+#container-sidepanel-scheduleroom .arrow.active-arrow {
+    visibility: visible;
+    color: var(--secondary-color);
+    animation: floating .6s alternate infinite linear;
+}
+
+#sidepanel-scheduleroom {
+    height: 84vh;
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+
+    gap: 12px;
+    overflow-y: scroll;
+    direction: rtl;
+
+    scrollbar-color: #ffffff00 #ffffff00;
+}
+
+@keyframes floating {
+    0% {
+        transform: translateY(10px);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
 }

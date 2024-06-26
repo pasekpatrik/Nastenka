@@ -11,9 +11,6 @@
 
     position: fixed;
     left: -10%;
-
-    overflow-y: scroll;
-    direction: rtl;
     transition: all .4s;
 }
 
